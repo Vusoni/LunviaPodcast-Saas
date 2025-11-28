@@ -4,7 +4,6 @@ import {
   type LucideIcon,
   MessageSquare,
   Sparkles,
-  Upload,
   Zap,
   Users,
 } from "lucide-react";
@@ -18,72 +17,70 @@ interface Feature {
 const FEATURES: Feature[] = [
   {
     icon: Sparkles,
-    title: "AI-Powered Analysis",
+    title: "Autonomous analysis",
     description:
-      "Advanced audio analysis using AssemblyAI to understand your podcast content and power all AI features.",
+      "AssemblyAI processing understands tone, structure, and speakers before any generation begins.",
   },
   {
     icon: FileText,
-    title: "Smart Summaries",
+    title: "Longform transcripts",
     description:
-      "Generate comprehensive summaries with key points and insights from your podcast content.",
+      "Precision transcripts with timestamps and diarization, ready for editing or publishing.",
   },
   {
     icon: MessageSquare,
-    title: "Social Posts",
+    title: "Platform copy",
     description:
-      "Generate platform-optimized social media posts for Twitter, LinkedIn, Instagram, TikTok, Video, and Facebook.",
+      "Auto-written captions & posts for Twitter, LinkedIn, Instagram, TikTok, and more.",
   },
   {
     icon: Hash,
-    title: "Titles & Hashtags",
+    title: "SEO ready",
     description:
-      "Get SEO-optimized titles and platform-specific hashtags automatically for maximum reach.",
+      "Generate titles, descriptions, and keyword sets tailored to your episode themes.",
   },
   {
     icon: Zap,
-    title: "Key Moments & Chapters",
+    title: "Key moments",
     description:
-      "Automatically identify viral moments and generate Video timestamps for better engagement.",
+      "Segment detection finds the moments worth clipping and suggests timestamped chapters.",
   },
   {
     icon: Users,
-    title: "Speaker Dialogue",
+    title: "Collaboration ready",
     description:
-      "Full transcript with speaker identification - see exactly who said what and when (premium only).",
+      "Share secure links with editors or clients—every asset stays synced inside Lunvia.",
   },
 ];
 
 export function FeaturesSection() {
   return (
-    <section className="container mx-auto px-4 py-24 md:py-32">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Everything You Need in{" "}
-            <span className="gradient-emerald-text">One Platform</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Powerful AI tools to amplify your podcast's reach and engagement
-          </p>
+    <section className="px-4">
+      <div className="container mx-auto">
+        <div className="flex flex-col gap-4 text-left mb-12">
+          <p className="accent-text">Feature stack</p>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
+            <h2 className="text-3xl md:text-4xl font-semibold flex-1">
+              A single upload fans out into every asset your team needs.
+            </h2>
+            <p className="text-white/60 max-w-xl">
+              Each block inherits the same neutral palette so your content, not the
+              interface, takes center stage.
+            </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {FEATURES.map((feature, index) => {
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((feature) => {
             const Icon = feature.icon;
             return (
               <div
                 key={feature.title}
-                className="glass-card rounded-2xl hover-lift p-8 group"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="minimal-card border border-white/10 bg-gradient-to-b from-white/5 to-transparent"
               >
-                <div className="rounded-2xl gradient-emerald p-4 w-fit mb-6 group-hover:animate-pulse-emerald transition-all">
-                  <Icon className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-emerald-600 transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <Icon className="mb-6 h-6 w-6 text-white" />
+                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>

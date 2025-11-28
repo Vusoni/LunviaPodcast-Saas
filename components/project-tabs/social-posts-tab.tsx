@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { Check, Copy } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
+import { Button } from "@/components/ui/button";
+import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 
 interface SocialMediaPostsTabProps {
 	SocialMediaPosts?: {

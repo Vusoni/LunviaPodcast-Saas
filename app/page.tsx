@@ -6,14 +6,16 @@ import { HeroSection } from "@/components/home/hero-section";
 import { PricingSection } from "@/components/home/pricing-section";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <PricingSection />
-      <CtaSection />
-      <Footer />
-    </div>
-  );
+	return (
+		<div className="min-h-screen bg-black text-white">
+			<Header />
+			<main className="space-y-32 md:space-y-40">
+				<HeroSection />
+				<FeaturesSection />
+				<PricingSection />
+				<CtaSection />
+			</main>
+			<Footer />
+		</div>
+	);
 }

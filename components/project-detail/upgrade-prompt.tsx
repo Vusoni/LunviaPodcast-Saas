@@ -5,7 +5,7 @@
  * Used in project detail tabs for features not available on their current plan.
  */
 
-import { Lock, Sparkles, Crown } from "lucide-react";
+import { Crown, Lock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 	PLAN_PRICES,
 	type PlanName,
 } from "@/lib/tier-config";
-import { getMinimumPlanForFeature, type FeatureName } from "@/lib/tier-utils";
+import { type FeatureName, getMinimumPlanForFeature } from "@/lib/tier-utils";
 
 interface UpgradePromptProps {
 	feature: string; // Display name (e.g., "Social Posts")
@@ -28,7 +28,7 @@ export function UpgradePrompt({
 	feature,
 	featureKey,
 	requiredPlan,
-	currentPlan,
+	currentPlan: _currentPlan,
 	className = "",
 }: UpgradePromptProps) {
 	// Determine the required plan for this feature
@@ -70,8 +70,8 @@ export function UpgradePrompt({
 								Unlock {feature} and more with {planName}:
 							</p>
 							<ul className="space-y-3 text-sm md:text-base text-gray-700">
-								{planFeatures.map((feat, idx) => (
-									<li key={idx} className="flex items-center gap-3">
+								{planFeatures.map((feat) => (
+									<li key={feat} className="flex items-center gap-3">
 										<span className="text-emerald-600 font-bold text-lg">
 											✓
 										</span>

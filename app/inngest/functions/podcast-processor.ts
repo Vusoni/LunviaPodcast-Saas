@@ -1,8 +1,7 @@
-// Imports
 import { api } from "@/convex/_generated/api";
-// import { inngest } from "../inngest/client";
-import { inngest } from "../client";
+import { convex } from "@/lib/convex-client";
 import type { PlanName } from "@/lib/tier-config";
+import { inngest } from "../client";
 import { generateHashtags } from "../steps/ai-generation/hashtags";
 import { generateKeyMoments } from "../steps/ai-generation/key-moments";
 import { generateSocialMediaPosts } from "../steps/ai-generation/social-posts";
@@ -11,7 +10,6 @@ import { generateTitles } from "../steps/ai-generation/titles";
 import { generateYouTubeTimestamps } from "../steps/ai-generation/video-timestamps";
 import { saveResultsToConvex } from "../steps/persistence/save-to-convex";
 import { transcribeWithAssemblyAI } from "../steps/transcription/assemblyai";
-import { convex } from "@/lib/convex-client";
 
 export const podcastProcessor = inngest.createFunction(
   {

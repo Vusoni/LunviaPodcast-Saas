@@ -1,6 +1,6 @@
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { PodcastUploader } from "@/components/podcast-uploader";
 import { Button } from "@/components/ui/button";
@@ -9,75 +9,93 @@ export async function HeroSection() {
   const { userId } = await auth();
   const isSignedIn = !!userId;
 
-  // Hero User Interface
   return (
-    <section className="relative overflow-hidden mesh-background">
-      <div className="container mx-auto px-4 py-24 md:pb-32 md:pt-20">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-20 animate-float">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card hover-glow mb-8 animate-shimmer">
-              <Sparkles className="h-5 w-5 text-emerald-600" />
-              <span className="text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-                AI-Powered Podcast Processing
-              </span>
-            </div>
-
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 leading-tight">
-              <span className="gradient-emerald-text">Transform</span> Your
-              <br />
-              Podcasts with AI
+    <section className="relative overflow-hidden px-4 pt-24">
+      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white/5 to-transparent opacity-20" />
+      <div className="container mx-auto relative z-10">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          <div className="space-y-10">
+            <p className="accent-text">AI-first podcast operating system</p>
+            <h1 className="text-4xl md:text-5xl lg:text-[4.25rem] leading-tight font-semibold">
+              Minimal workflows for creators who live in the dark mode.
             </h1>
-
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Upload your podcast audio and get AI-generated summaries,
-              transcripts, social posts, key moments, and more - all in minutes.
+            <p className="text-lg text-white/70 max-w-xl">
+              Upload a single audio file and receive transcripts, summaries, key
+              moments, and platform-ready social content—without leaving this tab.
             </p>
-          </div>
 
-          {isSignedIn ? (
-            <div className="space-y-6">
-              <div className="glass-card-strong rounded-2xl p-8 hover-lift">
-                <PodcastUploader />
+            {isSignedIn ? (
+              <div className="space-y-4">
+                <div className="soft-focus rounded-2xl p-6">
+                  <PodcastUploader />
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/60">
+                  <span className="w-2 h-2 rounded-full bg-white" />
+                  Processing runs on Lunvia’s secure AI pipeline in real time.
+                </div>
               </div>
-              <div className="text-center">
+            ) : (
+              <div className="flex flex-wrap gap-4">
+                <SignInButton mode="modal">
+                  <Button className="button-solid bg-white text-black">
+                    Start creating
+                    <Sparkles className="ml-2 h-4 w-4" />
+                  </Button>
+                </SignInButton>
                 <Link href="/dashboard/projects">
-                  <Button variant="outline" size="lg" className="hover-glow">
-                    View All Projects
+                  <Button className="button-ghost">
+                    View projects
+                    <ArrowUpRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <div className="minimal-card blurred-edge">
+              <p className="accent-text mb-6">Outputs in minutes</p>
+              <ul className="space-y-4 text-white/80">
+                {[
+                  "Timeline-accurate transcripts",
+                  "Key moments + chapter art",
+                  "Social posts tailored per platform",
+                  "SEO-ready titles & hashtags",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="h-2 w-2 rounded-full bg-white" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-          ) : (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <SignInButton mode="modal">
-                <Button
-                  size="lg"
-                  className="gradient-emerald text-white hover-glow text-lg px-8 py-6 rounded-xl shadow-lg"
-                >
-                  Get Started
-                  <Sparkles className="ml-2 h-6 w-6" />
-                </Button>
-              </SignInButton>
-              <Link href="/dashboard/projects">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="hover-glow text-lg px-8 py-6 rounded-xl"
-                >
-                  View Projects
-                </Button>
-              </Link>
+            <div className="minimal-card surface-muted space-y-5">
+              <div className="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white/50">
+                <span>Private pipeline</span>
+                <span className="h-px flex-1 bg-white/10" />
+                <span>Real-time</span>
+              </div>
+              <p className="text-white/65 text-sm leading-relaxed">
+                Every upload stays encrypted in-flight and at rest. The AI stack runs on isolated workers tuned for long-form audio.
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-white/80 text-sm">
+                <div className="rounded-2xl border border-white/10 p-4">
+                  <p className="text-3xl font-semibold">2.4M+</p>
+                  <p className="text-white/50 text-[0.65rem] uppercase tracking-[0.3em]">
+                    Minutes processed
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-white/10 p-4">
+                  <p className="text-3xl font-semibold">99.9%</p>
+                  <p className="text-white/50 text-[0.65rem] uppercase tracking-[0.3em]">
+                    Uptime this year
+                  </p>
+                </div>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
-
-      {/* Decorative gradient orbs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
-      <div
-        className="absolute bottom-0 left-0 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"
-        style={{ animationDelay: "1s" }}
-      ></div>
     </section>
   );
 }

@@ -1,14 +1,17 @@
-import type { Auth } from "@clerk/nextjs/server";
-import { convex } from "@/lib/convex-client";
 import { api } from "@/convex/_generated/api";
+import { convex } from "@/lib/convex-client";
 import {
-  FEATURES,
+  type FeatureName,
   PLAN_FEATURES,
   PLAN_LIMITS,
-  type FeatureName,
-  type PlanLimits,
   type PlanName,
 } from "./tier-config";
+
+export type { FeatureName } from "./tier-config";
+
+type AuthWithHas = {
+  has?: (params: { feature?: FeatureName; plan?: PlanName }) => boolean;
+};
 
 export interface UploadValidationResult {
   allowed: boolean;
@@ -19,7 +22,7 @@ export interface UploadValidationResult {
 }
 
 export async function checkUploadLimits(
-  auth: Auth,
+  auth: AuthWithHas,
   userId: string,
   fileSize: number,
   duration?: number
@@ -87,7 +90,10 @@ export async function checkUploadLimits(
   return { allowed: true };
 }
 
-export function checkFeatureAccess(auth: Auth, feature: FeatureName): boolean {
+export function checkFeatureAccess(
+  auth: AuthWithHas,
+  feature: FeatureName
+): boolean {
   const { has } = auth;
   return has ? has({ feature }) : false;
 }
