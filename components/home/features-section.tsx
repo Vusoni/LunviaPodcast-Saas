@@ -32,7 +32,7 @@ const FEATURES: Feature[] = [
     icon: MessageSquare,
     title: "Social Posts",
     description:
-      "Generate platform-optimized social media posts for Twitter, LinkedIn, Instagram, TikTok, YouTube, and Facebook.",
+      "Generate platform-optimized social media posts for Twitter, LinkedIn, Instagram, TikTok, Video, and Facebook.",
   },
   {
     icon: Hash,
@@ -44,13 +44,13 @@ const FEATURES: Feature[] = [
     icon: Zap,
     title: "Key Moments & Chapters",
     description:
-      "Automatically identify viral moments and generate YouTube timestamps for better engagement.",
+      "Automatically identify viral moments and generate Video timestamps for better engagement.",
   },
   {
     icon: Users,
     title: "Speaker Dialogue",
     description:
-      "Full transcript with speaker identification - see exactly who said what and when (ULTRA only).",
+      "Full transcript with speaker identification - see exactly who said what and when (premium only).",
   },
 ];
 
@@ -83,7 +83,9 @@ export function FeaturesSection() {
                 <h3 className="text-2xl font-bold mb-3 group-hover:text-emerald-600 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             );
           })}

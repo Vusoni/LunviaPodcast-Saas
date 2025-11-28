@@ -82,10 +82,10 @@ export default defineSchema({
       v.object({
         keyMoments: v.optional(v.string()),
         summary: v.optional(v.string()),
-        socialPosts: v.optional(v.string()),
+        SocialMediaPosts: v.optional(v.string()),
         titles: v.optional(v.string()),
         hashtags: v.optional(v.string()),
-        youtubeTimestamps: v.optional(v.string()),
+        VideoTimestamps: v.optional(v.string()),
       })
     ),
 
@@ -161,13 +161,13 @@ export default defineSchema({
 
     // Platform-optimized social media posts
     // Each post is tailored to the platform's best practices and character limits
-    socialPosts: v.optional(
+    SocialMediaPosts: v.optional(
       v.object({
         twitter: v.string(), // 280 chars, punchy and engaging
         linkedin: v.string(), // Professional tone, longer form
         instagram: v.string(), // Visual description + engagement hooks
         tiktok: v.string(), // Casual, trend-aware
-        youtube: v.string(), // Description with timestamps and CTAs
+        Video: v.string(), // Description with timestamps and CTAs
         facebook: v.string(), // Community-focused, conversation starters
       })
     ),
@@ -175,8 +175,8 @@ export default defineSchema({
     // Title suggestions for various contexts
     titles: v.optional(
       v.object({
-        youtubeShort: v.array(v.string()), // Catchy, clickable (60 chars)
-        youtubeLong: v.array(v.string()), // Descriptive, SEO-friendly
+        VideoShort: v.array(v.string()), // Catchy, clickable (60 chars)
+        VideoLong: v.array(v.string()), // Descriptive, SEO-friendly
         podcastTitles: v.array(v.string()), // Episode titles
         seoKeywords: v.array(v.string()), // Keywords for discoverability
       })
@@ -185,7 +185,7 @@ export default defineSchema({
     // Platform-specific hashtag recommendations
     hashtags: v.optional(
       v.object({
-        youtube: v.array(v.string()),
+        Video: v.array(v.string()),
         instagram: v.array(v.string()),
         tiktok: v.array(v.string()),
         linkedin: v.array(v.string()),
@@ -193,8 +193,8 @@ export default defineSchema({
       })
     ),
 
-    // YouTube chapter timestamps - enhances navigation and watch time
-    youtubeTimestamps: v.optional(
+    // Video chapter timestamps - enhances navigation and watch time
+    VideoTimestamps: v.optional(
       v.array(
         v.object({
           timestamp: v.string(), // Format: "12:34"

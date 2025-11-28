@@ -32,16 +32,16 @@ export const PROJECT_TABS: TabConfig[] = [
     feature: FEATURES.KEY_MOMENTS,
   },
   {
-    value: "youtube-timestamps",
-    label: "YouTube Timestamps",
-    errorKey: "youtubeTimestamps",
-    feature: FEATURES.YOUTUBE_TIMESTAMPS,
+    value: "Video-timestamps",
+    label: "Video Timestamps",
+    errorKey: "VideoTimestamps",
+    feature: FEATURES.VIDEO_TIMESTAMPS,
   },
   {
     value: "social",
     label: "Social Posts",
-    errorKey: "socialPosts",
-    feature: FEATURES.SOCIAL_POSTS,
+    errorKey: "SocialMediaPosts",
+    feature: FEATURES.SOCIAL_MEDIA_POSTS,
   },
   {
     value: "hashtags",

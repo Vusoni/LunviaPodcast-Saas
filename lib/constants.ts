@@ -11,7 +11,7 @@ import {
   Heading,
   MessageSquare,
   Target,
-  Youtube,
+  Video,
 } from "lucide-react";
 
 // File upload constraints
@@ -99,7 +99,7 @@ export const GENERATION_OUTPUTS: GenerationOutput[] = [
     name: "Social Posts",
     icon: MessageSquare,
     description:
-      "Crafting platform-optimized posts for Twitter, LinkedIn, Instagram, TikTok, YouTube, and Facebook",
+      "Crafting platform-optimized posts for Twitter, LinkedIn, Instagram, TikTok, Video, and Facebook",
   },
   {
     name: "Titles",
@@ -114,9 +114,9 @@ export const GENERATION_OUTPUTS: GenerationOutput[] = [
       "Creating trending platform-specific hashtag strategies for better discoverability",
   },
   {
-    name: "YouTube Timestamps",
-    icon: Youtube,
+    name: "Video Timestamps",
+    icon: Video,
     description:
-      "Formatting clickable chapter markers for YouTube video descriptions",
+      "Formatting clickable chapter markers for Video video descriptions",
   },
 ];

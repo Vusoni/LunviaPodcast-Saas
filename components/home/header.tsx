@@ -71,7 +71,7 @@ export function Header() {
                 {/* Show "Upgrade to Pro" for Free users */}
                 <Protect
                   condition={(has) =>
-                    !has({ plan: "pro" }) && !has({ plan: "ultra" })
+                    !has({ plan: "standard" }) && !has({ plan: "premium" })
                   }
                   fallback={null}
                 >
@@ -90,10 +90,10 @@ export function Header() {
                   </Link>
                 </Protect>
 
-                {/* Check whether the user own a pro plan */}
+                {/* Check whether the user own a standardplan */}
                 <Protect
                   condition={(has) =>
-                    has({ plan: "pro" }) && !has({ plan: "ultra" })
+                    has({ plan: "standard" }) && !has({ plan: "premium" })
                   }
                   fallback={null}
                 >
@@ -106,15 +106,17 @@ export function Header() {
                       }
                     >
                       <Crown className="h-4 w-4" />
-                      <span className="hidden lg:inline">Upgrade to Ultra</span>
-                      <span className="lg:hidden">Ultra</span>
+                      <span className="hidden lg:inline">
+                        Upgrade to premium
+                      </span>
+                      <span className="lg:hidden">premium</span>
                     </Button>
                   </Link>
                 </Protect>
 
-                {/* Show Ultra badge for Ultra users */}
+                {/* Show premium badge for premium users */}
                 <Protect
-                  condition={(has) => has({ plan: "ultra" })}
+                  condition={(has) => has({ plan: "premium" })}
                   fallback={null}
                 >
                   <Badge
@@ -125,7 +127,7 @@ export function Header() {
                     }
                   >
                     <Crown className="h-3.5 w-3.5" />
-                    <span className="font-semibold">Ultra</span>
+                    <span className="font-semibold">premium</span>
                   </Badge>
                 </Protect>
 

@@ -184,34 +184,34 @@ export const saveGeneratedContent = mutation({
         tldr: v.string(),
       })
     ),
-    socialPosts: v.optional(
+    SocialMediaPosts: v.optional(
       v.object({
         twitter: v.string(),
         linkedin: v.string(),
         instagram: v.string(),
         tiktok: v.string(),
-        youtube: v.string(),
+        Video: v.string(),
         facebook: v.string(),
       })
     ),
     titles: v.optional(
       v.object({
-        youtubeShort: v.array(v.string()),
-        youtubeLong: v.array(v.string()),
+        VideoShort: v.array(v.string()),
+        VideoLong: v.array(v.string()),
         podcastTitles: v.array(v.string()),
         seoKeywords: v.array(v.string()),
       })
     ),
     hashtags: v.optional(
       v.object({
-        youtube: v.array(v.string()),
+        Video: v.array(v.string()),
         instagram: v.array(v.string()),
         tiktok: v.array(v.string()),
         linkedin: v.array(v.string()),
         twitter: v.array(v.string()),
       })
     ),
-    youtubeTimestamps: v.optional(
+    VideoTimestamps: v.optional(
       v.array(
         v.object({
           timestamp: v.string(),
@@ -266,10 +266,10 @@ export const saveJobErrors = mutation({
     jobErrors: v.object({
       keyMoments: v.optional(v.string()),
       summary: v.optional(v.string()),
-      socialPosts: v.optional(v.string()),
+      SocialMediaPosts: v.optional(v.string()),
       titles: v.optional(v.string()),
       hashtags: v.optional(v.string()),
-      youtubeTimestamps: v.optional(v.string()),
+      VideoTimestamps: v.optional(v.string()),
     }),
   },
   handler: async (ctx, args) => {

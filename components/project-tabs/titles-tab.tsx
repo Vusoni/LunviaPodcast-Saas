@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 
 interface TitlesTabProps {
   titles?: {
-    youtubeShort: string[];
-    youtubeLong: string[];
+    VideoShort: string[];
+    VideoLong: string[];
     podcastTitles: string[];
     seoKeywords: string[];
   };
@@ -13,13 +13,13 @@ interface TitlesTabProps {
 
 const TITLE_CATEGORIES = [
   {
-    key: "youtubeShort" as const,
-    title: "YouTube Short Titles",
+    key: "VideoShort" as const,
+    title: "Video Short Titles",
     type: "list" as const,
   },
   {
-    key: "youtubeLong" as const,
-    title: "YouTube Long Titles",
+    key: "VideoLong" as const,
+    title: "Video Long Titles",
     type: "list" as const,
   },
   {

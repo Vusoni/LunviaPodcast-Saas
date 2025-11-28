@@ -7,13 +7,13 @@
  * features available in their new plan that weren't generated when the project
  * was processed on their old plan.
  *
- * Example: User had Free plan (only Summary), upgrades to Pro.
+ * Example: User had Free plan (only Summary), upgrades to standard.
  * This will generate: Social Posts, Titles, Hashtags all at once.
  *
  * Note: Transcription is NOT a feature - it's available to all users.
  */
 
-import { inngest } from "@/inngest/client";
+import { inngest } from "../inngest/client";
 import { auth } from "@clerk/nextjs/server";
 import type { Id } from "@/convex/_generated/dataModel";
 // Removed getUserPlan - using Clerk's has() directly per docs
@@ -37,11 +37,11 @@ export async function generateMissingFeatures(projectId: Id<"projects">) {
   }
 
   // Get user's current plan using Clerk's has() method
-  let currentPlan: "free" | "pro" | "ultra" = "free";
-  if (has?.({ plan: "ultra" })) {
-    currentPlan = "ultra";
-  } else if (has?.({ plan: "pro" })) {
-    currentPlan = "pro";
+  let currentPlan: "free" | "standard" | "premium" = "free";
+  if (has?.({ plan: "premium" })) {
+    currentPlan = "premium";
+  } else if (has?.({ plan: "standard" })) {
+    currentPlan = "standard";
   }
 
   // Get project to check what's already generated
@@ -56,11 +56,11 @@ export async function generateMissingFeatures(projectId: Id<"projects">) {
   }
 
   // Infer what plan was used during processing based on generated features
-  let originalPlan: "free" | "pro" | "ultra" = "free";
-  if (project.keyMoments || project.youtubeTimestamps) {
-    originalPlan = "ultra";
-  } else if (project.socialPosts || project.titles || project.hashtags) {
-    originalPlan = "pro";
+  let originalPlan: "free" | "standard" | "premium" = "free";
+  if (project.keyMoments || project.VideoTimestamps) {
+    originalPlan = "premium";
+  } else if (project.SocialMediaPosts || project.titles || project.hashtags) {
+    originalPlan = "standard";
   }
 
   // Get all features available in current plan
@@ -92,6 +92,7 @@ export async function generateMissingFeatures(projectId: Id<"projects">) {
   await Promise.all(
     missingJobs.map((job) =>
       inngest.send({
+        // Generate 3 missing jobs and render it, without blocking other one
         name: "podcast/retry-job",
         data: {
           projectId,

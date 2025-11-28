@@ -36,28 +36,28 @@ function getUpgradeMessage(reason?: string, feature?: string) {
       return {
         title: "Upgrade for Larger Files",
         description:
-          "Your file exceeds your plan's size limit. Upgrade to Pro for 200MB uploads or Ultra for 3GB uploads.",
+          "Your file exceeds your plan's size limit. Upgrade to standard for 200MB uploads or premium for 3GB uploads.",
         icon: Zap,
       };
     case "duration":
       return {
         title: "Upgrade for Longer Podcasts",
         description:
-          "Your podcast exceeds your plan's duration limit. Upgrade to Pro for 2-hour podcasts or Ultra for unlimited duration.",
+          "Your podcast exceeds your plan's duration limit. Upgrade to standard for 2-hour podcasts or premium for unlimited duration.",
         icon: Zap,
       };
     case "projects":
       return {
         title: "You've Reached Your Project Limit",
         description:
-          "Upgrade to create more projects. Pro: 30 projects, Ultra: unlimited projects.",
+          "Upgrade to create more projects. Pro: 30 projects, premium: unlimited projects.",
         icon: Lock,
       };
     case "feature":
       return {
         title: `Unlock ${feature || "Premium Features"}`,
         description:
-          "Access advanced AI features like social posts, YouTube timestamps, and key moments by upgrading your plan.",
+          "Access advanced AI features like social posts, Video timestamps, and key moments by upgrading your plan.",
         icon: Lock,
       };
     default:
@@ -75,8 +75,8 @@ function getUpgradeMessage(reason?: string, feature?: string) {
  */
 function getCurrentPlan(authObj: Awaited<ReturnType<typeof auth>>) {
   const { has } = authObj;
-  if (has?.({ plan: "ultra" })) return "ultra";
-  if (has?.({ plan: "pro" })) return "pro";
+  if (has?.({ plan: "premium" })) return "premium";
+  if (has?.({ plan: "standard" })) return "standard";
   return "free";
 }
 
@@ -122,15 +122,15 @@ export default async function UpgradePage({ searchParams }: UpgradePageProps) {
             <span>Current plan:</span>
             <Badge
               className={
-                currentPlan === "ultra"
+                currentPlan === "premium"
                   ? "gradient-emerald text-white px-4 py-1.5"
                   : "bg-gray-200 text-gray-700 px-4 py-1.5"
               }
             >
-              {currentPlan === "ultra" && <Crown className="h-4 w-4 mr-1" />}
+              {currentPlan === "premium" && <Crown className="h-4 w-4 mr-1" />}
               {currentPlan === "free" && "Free"}
-              {currentPlan === "pro" && "Pro"}
-              {currentPlan === "ultra" && "Ultra"}
+              {currentPlan === "standard" && "standard"}
+              {currentPlan === "premium" && "premium"}
             </Badge>
           </div>
         </div>

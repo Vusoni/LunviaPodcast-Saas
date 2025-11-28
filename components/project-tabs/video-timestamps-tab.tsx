@@ -4,18 +4,16 @@ import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { Check, Copy } from "lucide-react";
 
-type YouTubeTimestamp = {
+type VideoTimestamp = {
   timestamp: string;
   description: string;
 };
 
-type YouTubeTimestampsTabProps = {
-  timestamps?: YouTubeTimestamp[];
+type VideoTimestampsTabProps = {
+  timestamps?: VideoTimestamp[];
 };
 
-export function YouTubeTimestampsTab({
-  timestamps,
-}: YouTubeTimestampsTabProps) {
+export function VideoTimestampsTab({ timestamps }: VideoTimestampsTabProps) {
   const { copy, isCopied } = useCopyToClipboard();
 
   // TabContent ensures this is never undefined at runtime
@@ -28,7 +26,7 @@ export function YouTubeTimestampsTab({
   const handleCopyAll = () => {
     copy(
       formattedTimestamps,
-      "youtube-timestamps",
+      "Video-timestamps",
       "Timestamps copied to clipboard!",
     );
   };
@@ -38,11 +36,11 @@ export function YouTubeTimestampsTab({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4">
         <div>
           <h3 className="text-xl md:text-2xl font-bold gradient-emerald-text mb-2">
-            YouTube Timestamps
+            Video Timestamps
           </h3>
           <p className="text-sm text-gray-600">
-            Copy these timestamps and paste them into your YouTube video
-            description. YouTube will automatically create clickable chapter
+            Copy these timestamps and paste them into your Video video
+            description. Video will automatically create clickable chapter
             markers.
           </p>
         </div>
@@ -50,7 +48,7 @@ export function YouTubeTimestampsTab({
           onClick={handleCopyAll}
           className="gradient-emerald text-white hover-glow shadow-lg gap-2 shrink-0"
         >
-          {isCopied("youtube-timestamps") ? (
+          {isCopied("Video-timestamps") ? (
             <>
               <Check className="h-4 w-4" />
               Copied!

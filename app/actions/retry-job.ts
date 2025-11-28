@@ -1,14 +1,8 @@
+// Sever side
 "use server";
 
-/**
- * Server Action: Retry Failed Generation Job
- *
- * Allows users to retry individual AI generation steps that failed.
- * Also handles upgrade scenarios - if user upgraded, regenerates locked features.
- * Triggers a new Inngest event to regenerate just that specific output.
- */
-
-import { inngest } from "@/inngest/client";
+// Imports
+import { inngest } from "../inngest/client";
 import { auth } from "@clerk/nextjs/server";
 import type { Id } from "@/convex/_generated/dataModel";
 // Removed getUserPlan - using Clerk's has() directly per docs
@@ -18,10 +12,10 @@ import { api } from "@/convex/_generated/api";
 export type RetryableJob =
   | "keyMoments"
   | "summary"
-  | "socialPosts"
+  | "SocialMediaPosts"
   | "titles"
   | "hashtags"
-  | "youtubeTimestamps";
+  | "VideoTimestamps";
 
 export async function retryJob(projectId: Id<"projects">, job: RetryableJob) {
   const authObj = await auth();
@@ -32,11 +26,11 @@ export async function retryJob(projectId: Id<"projects">, job: RetryableJob) {
   }
 
   // Get user's current plan using Clerk's has() method
-  let currentPlan: "free" | "pro" | "ultra" = "free";
-  if (has?.({ plan: "ultra" })) {
-    currentPlan = "ultra";
-  } else if (has?.({ plan: "pro" })) {
-    currentPlan = "pro";
+  let currentPlan: "free" | "standard" | "premium" = "free";
+  if (has?.({ plan: "premium" })) {
+    currentPlan = "premium";
+  } else if (has?.({ plan: "standard" })) {
+    currentPlan = "standard";
   }
 
   // Get project to check what was already generated
@@ -47,11 +41,11 @@ export async function retryJob(projectId: Id<"projects">, job: RetryableJob) {
   }
 
   // Infer original plan from what features were generated
-  let originalPlan: "free" | "pro" | "ultra" = "free";
-  if (project.keyMoments || project.youtubeTimestamps) {
-    originalPlan = "ultra";
-  } else if (project.socialPosts || project.titles || project.hashtags) {
-    originalPlan = "pro";
+  let originalPlan: "free" | "standard" | "premium" = "free";
+  if (project.keyMoments || project.VideoTimestamps) {
+    originalPlan = "premium";
+  } else if (project.SocialMediaPosts || project.titles || project.hashtags) {
+    originalPlan = "standard";
   }
 
   // Trigger Inngest event to retry the specific job

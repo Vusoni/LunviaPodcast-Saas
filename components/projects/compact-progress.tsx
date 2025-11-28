@@ -31,7 +31,7 @@ export function CompactProgress({
     jobStatus.social,
     jobStatus.titles,
     jobStatus.hashtags,
-    jobStatus.youtubeTimestamps,
+    jobStatus.VideoTimestamps,
   ];
   const completedSteps = contentSteps.filter((s) => s === "completed").length;
   const totalSteps = contentSteps.length;
@@ -71,7 +71,7 @@ export function CompactProgress({
         </span>
       </div>
       <div className="relative h-2 bg-emerald-100 rounded-full overflow-hidden">
-        <div 
+        <div
           className="absolute inset-y-0 left-0 progress-emerald rounded-full transition-all duration-300"
           style={{ width: `${progress}%` }}
         />

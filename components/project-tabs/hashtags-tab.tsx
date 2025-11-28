@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface HashtagsTabProps {
   hashtags?: {
-    youtube: string[];
+    Video: string[];
     instagram: string[];
     tiktok: string[];
     linkedin: string[];
@@ -13,7 +13,7 @@ interface HashtagsTabProps {
 }
 
 const PLATFORMS = [
-  { key: "youtube" as const, title: "YouTube" },
+  { key: "Video" as const, title: "Video" },
   { key: "instagram" as const, title: "Instagram" },
   { key: "tiktok" as const, title: "TikTok" },
   { key: "linkedin" as const, title: "LinkedIn" },

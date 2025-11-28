@@ -1,14 +1,20 @@
-//Client side component
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
 import { del } from "@vercel/blob";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import { inngest } from "@/inngest/client";
+// import { inngest } from "../inngest/client";
+import { inngest } from "../inngest/client";
 import { convex } from "@/lib/convex-client";
 import { checkUploadLimits } from "@/lib/tier-utils";
 
+/**
+ * Validate upload before starting
+ *
+ * Pre-validates upload against plan limits to provide clear error messages
+ * before attempting the actual upload to Vercel Blob.
+ */
 export async function validateUploadAction(input: {
   fileSize: number;
   duration?: number;
@@ -48,10 +54,37 @@ interface CreateProjectInput {
   fileDuration?: number; // Seconds (optional)
 }
 
-// Create Project - Add project to convex database
+/**
+ * Create project and trigger Inngest workflow
+ *
+ * Atomic Operation (both or neither):
+ * 1. Validate user's plan and limits
+ * 2. Create project record in Convex with user's plan
+ * 3. Send event to Inngest to start processing
+ *
+ * Flow:
+ * 1. Client uploads file to Vercel Blob (validated in upload route)
+ * 2. Client calls this server action with file metadata
+ * 3. This action validates limits again (defense-in-depth)
+ * 4. This action creates Convex project (status: "uploaded")
+ * 5. This action triggers Inngest workflow with plan info
+ * 6. Inngest processes podcast asynchronously based on plan
+ * 7. Client redirects to project detail page
+ *
+ * Error Handling:
+ * - Throws on auth failure (caught by client)
+ * - Throws on missing fields (caught by client)
+ * - Throws on plan limit exceeded (caught by client)
+ * - Throws on Convex/Inngest errors (caught by client)
+ * - Client shows error toast and allows retry
+ *
+ * @param input - File metadata from Vercel Blob upload
+ * @returns Project ID for navigation
+ * @throws Error if authentication fails, limits exceeded, or required fields missing
+ */
 export async function createProjectAction(input: CreateProjectInput) {
   try {
-    // Authenticate user - User should be authenticated in order to create project
+    // Authenticate user and get plan via Clerk
     const authObj = await auth();
     const { userId } = authObj;
 
@@ -59,7 +92,6 @@ export async function createProjectAction(input: CreateProjectInput) {
       throw new Error("Unauthorized");
     }
 
-    // Destructure data from input
     const { fileUrl, fileName, fileSize, mimeType, fileDuration } = input;
 
     // Validate required fields
@@ -71,11 +103,11 @@ export async function createProjectAction(input: CreateProjectInput) {
     const { has } = authObj;
 
     // Determine user's plan using Clerk
-    let plan: "free" | "pro" | "ultra" = "free";
-    if (has?.({ plan: "ultra" })) {
-      plan = "ultra";
-    } else if (has?.({ plan: "pro" })) {
-      plan = "pro";
+    let plan: "free" | "standard" | "premium" = "free";
+    if (has?.({ plan: "premium" })) {
+      plan = "premium";
+    } else if (has?.({ plan: "standard" })) {
+      plan = "standard";
     }
 
     const validation = await checkUploadLimits(
@@ -89,8 +121,11 @@ export async function createProjectAction(input: CreateProjectInput) {
       throw new Error(validation.message || "Upload not allowed for your plan");
     }
 
+    // Extract file extension for display
     const fileExtension = fileName.split(".").pop() || "unknown";
 
+    // Create project in Convex database
+    // Status starts as "uploaded", will be updated by Inngest
     const projectId = await convex.mutation(api.projects.createProject, {
       userId,
       inputUrl: fileUrl,
@@ -101,6 +136,8 @@ export async function createProjectAction(input: CreateProjectInput) {
       mimeType: mimeType,
     });
 
+    // Trigger Inngest workflow asynchronously with user's current plan
+    // Event name "podcast/uploaded" matches workflow trigger
     await inngest.send({
       name: "podcast/uploaded",
       data: {
@@ -121,7 +158,23 @@ export async function createProjectAction(input: CreateProjectInput) {
   }
 }
 
-// Delete Projects
+/**
+ * Delete project and associated Blob storage
+ *
+ * Flow:
+ * 1. Validate user authentication
+ * 2. Call Convex mutation to delete project (validates ownership)
+ * 3. Delete file from Vercel Blob storage
+ *
+ * Error Handling:
+ * - Throws on auth failure
+ * - Throws if project not found or user doesn't own it
+ * - Logs but doesn't throw on Blob deletion failure (already deleted from DB)
+ *
+ * @param projectId - Convex project ID
+ * @returns Success response
+ * @throws Error if authentication fails or user doesn't own project
+ */
 export async function deleteProjectAction(projectId: Id<"projects">) {
   try {
     // Authenticate user via Clerk
@@ -152,7 +205,21 @@ export async function deleteProjectAction(projectId: Id<"projects">) {
   }
 }
 
-// Update Display Name Action
+/**
+ * Update project display name
+ *
+ * Flow:
+ * 1. Validate user authentication
+ * 2. Call Convex mutation to update displayName (validates ownership)
+ *
+ * Real-time Impact:
+ * - All subscribed components instantly see the new name
+ *
+ * @param projectId - Convex project ID
+ * @param displayName - New display name
+ * @returns Success response
+ * @throws Error if authentication fails or user doesn't own project
+ */
 export async function updateDisplayNameAction(
   projectId: Id<"projects">,
   displayName: string

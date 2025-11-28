@@ -33,7 +33,7 @@ export const PLAN_LIMITS: Record<PlanName, PlanLimits> = {
  */
 export const FEATURES = {
   SUMMARY: "summary",
-  SOCIAL_MEDIA_POSTS: "social_posts",
+  SOCIAL_MEDIA_POSTS: "SOCIAL_MEDIA_POSTS",
   TITLES: "titles",
   HASHTAGS: "hashtags",
   VIDEO_TIMESTAMPS: "video_timestamps",
@@ -73,8 +73,8 @@ export const PLAN_FEATURES: Record<PlanName, FeatureName[]> = {
  */
 export const PLAN_NAMES: Record<PlanName, string> = {
   free: "Free",
-  standard: "Pro",
-  premium: "Ultra",
+  standard: "standard",
+  premium: "premium",
 };
 
 /**
@@ -87,7 +87,7 @@ export const PLAN_PRICES: Record<PlanName, string> = {
 };
 
 export const FEATURE_TO_JOB_MAP = {
-  [FEATURES.SOCIAL_MEDIA_POSTS]: "socialPosts",
+  [FEATURES.SOCIAL_MEDIA_POSTS]: "SocialMediaPosts",
   [FEATURES.TITLES]: "titles",
   [FEATURES.HASHTAGS]: "hashtags",
   [FEATURES.KEY_MOMENTS]: "keyMoments",

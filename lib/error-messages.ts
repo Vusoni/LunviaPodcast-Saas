@@ -5,7 +5,12 @@
  * Used across upload validation, UI components, and error handling.
  */
 
-import { PLAN_LIMITS, PLAN_NAMES, PLAN_PRICES, type PlanName } from "./tier-config";
+import {
+  PLAN_LIMITS,
+  PLAN_NAMES,
+  PLAN_PRICES,
+  type PlanName,
+} from "./tier-config";
 
 export interface UpgradeMessageDetails {
   title: string;
@@ -32,19 +37,30 @@ export function getUpgradeMessage(
     featureName?: string;
   } = {}
 ): UpgradeMessageDetails {
-  const { currentPlan = "free", fileSize, duration, currentCount, limit, featureName } = details;
+  const {
+    currentPlan = "free",
+    fileSize,
+    duration,
+    currentCount,
+    limit,
+    featureName,
+  } = details;
 
   // Determine suggested plan based on reason
-  let suggestedPlan: PlanName = currentPlan === "free" ? "pro" : "ultra";
+  let suggestedPlan: PlanName = currentPlan === "free" ? "standard" : "premium";
 
   switch (reason) {
     case "file_size": {
       const sizeMB = fileSize ? (fileSize / (1024 * 1024)).toFixed(1) : "N/A";
-      // If free and file < 200MB, suggest Pro. If > 200MB or already Pro, suggest Ultra
-      if (currentPlan === "free" && fileSize && fileSize <= PLAN_LIMITS.pro.maxFileSize) {
-        suggestedPlan = "pro";
+      // If free and file < 200MB, suggest standard. If > 200MB or already Pro, suggest premium
+      if (
+        currentPlan === "free" &&
+        fileSize &&
+        fileSize <= PLAN_LIMITS.standard.maxFileSize
+      ) {
+        suggestedPlan = "standard";
       } else {
-        suggestedPlan = "ultra";
+        suggestedPlan = "premium";
       }
 
       const targetLimit = PLAN_LIMITS[suggestedPlan].maxFileSize;
@@ -60,11 +76,15 @@ export function getUpgradeMessage(
 
     case "duration": {
       const durationMin = duration ? Math.floor(duration / 60) : 0;
-      // If free and duration < 2hr, suggest Pro. If > 2hr or already Pro, suggest Ultra
-      if (currentPlan === "free" && duration && duration <= (PLAN_LIMITS.pro.maxDuration || 0)) {
-        suggestedPlan = "pro";
+      // If free and duration < 2hr, suggest standard. If > 2hr or already Pro, suggest premium
+      if (
+        currentPlan === "free" &&
+        duration &&
+        duration <= (PLAN_LIMITS.standard.maxDuration || 0)
+      ) {
+        suggestedPlan = "standard";
       } else {
-        suggestedPlan = "ultra";
+        suggestedPlan = "premium";
       }
 
       const targetLimit = PLAN_LIMITS[suggestedPlan].maxDuration;
@@ -81,10 +101,11 @@ export function getUpgradeMessage(
     }
 
     case "project_limit": {
-      // If free, suggest Pro. If Pro, suggest Ultra
-      suggestedPlan = currentPlan === "free" ? "pro" : "ultra";
+      // If free, suggest standard. If Pro, suggest premium
+      suggestedPlan = currentPlan === "free" ? "standard" : "premium";
       const targetLimit = PLAN_LIMITS[suggestedPlan].maxProjects;
-      const targetLimitText = targetLimit === null ? "unlimited" : `${targetLimit}`;
+      const targetLimitText =
+        targetLimit === null ? "unlimited" : `${targetLimit}`;
 
       const countType = currentPlan === "free" ? "total" : "active";
 
@@ -98,16 +119,26 @@ export function getUpgradeMessage(
 
     case "feature_locked": {
       // Determine required plan based on feature
-      // Most features are Pro, advanced features (timestamps, key moments) are Ultra
-      const ultraFeatures = ["YouTube Timestamps", "Key Moments", "Speaker Diarization"];
-      const requiredPlan = ultraFeatures.includes(featureName || "") ? "ultra" : "pro";
+      // Most features are Pro, advanced features (timestamps, key moments) are premium
+      const premiumFeatures = [
+        "Video Timestamps",
+        "Key Moments",
+        "Speaker Diarization",
+      ];
+      const requiredPlan = premiumFeatures.includes(featureName || "")
+        ? "premium"
+        : "standard";
       suggestedPlan = requiredPlan;
 
       return {
         title: `${featureName || "Feature"} Not Available`,
-        message: `${featureName || "This feature"} is available on the ${PLAN_NAMES[requiredPlan]} plan (${PLAN_PRICES[requiredPlan]}). Upgrade to unlock this feature.`,
+        message: `${featureName || "This feature"} is available on the ${
+          PLAN_NAMES[requiredPlan]
+        } plan (${PLAN_PRICES[requiredPlan]}). Upgrade to unlock this feature.`,
         suggestedPlan,
-        upgradeUrl: `/dashboard/upgrade?reason=feature&feature=${encodeURIComponent(featureName || "premium")}`,
+        upgradeUrl: `/dashboard/upgrade?reason=feature&feature=${encodeURIComponent(
+          featureName || "premium"
+        )}`,
       };
     }
 
@@ -115,7 +146,7 @@ export function getUpgradeMessage(
       return {
         title: "Upgrade Required",
         message: "This action requires a higher plan.",
-        suggestedPlan: "pro",
+        suggestedPlan: "standard",
         upgradeUrl: "/dashboard/upgrade",
       };
   }
@@ -127,7 +158,8 @@ export function getUpgradeMessage(
 export function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  if (bytes < 1024 * 1024 * 1024)
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
 }
 
@@ -137,10 +169,9 @@ export function formatFileSize(bytes: number): string {
 export function formatDuration(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  
+
   if (hours > 0) {
     return `${hours}h ${minutes}m`;
   }
   return `${minutes}m`;
 }
-

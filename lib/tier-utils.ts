@@ -60,7 +60,7 @@ export async function checkUploadLimits(
     };
   }
 
-  // Check project count limit (skip for ultra - unlimited)
+  // Check project count limit (skip for premium - unlimited)
   if (limits.maxProjects !== null) {
     // FREE: count all projects (including deleted)
     // PRO: count only active projects
